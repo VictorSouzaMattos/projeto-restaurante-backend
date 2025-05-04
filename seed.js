@@ -1,77 +1,62 @@
 const mongoose = require("mongoose");
-const Menu = require("./models/Menu");
+const MenuItem = require("./models/MenuItem");
 
-// Substitua com suas credenciais reais
-const uri =
-  "mongodb+srv://admin:admin123@cluster0.iptsnp9.mongodb.net/restaurante?retryWrites=true&w=majority";
-
-// Lista reduzida de itens do menu
-const itensDoMenu = [
+const menuItems = [
   {
     nome: "Bife Acebolado",
-    descricao: "Acompanha: Bife acebolado, arroz, feijão, fritas, salada",
+    descricao: "Acompanha arroz, feijão, fritas, salada",
     preco: 30.0,
     categoria: "Pratos principais",
     imagem:
-      "https://t4.ftcdn.net/jpg/05/51/00/19/360_F_551001956_VG7YBMoslLKNI6yVB1BS4CAxSrUX4rAd.jpg",
+      "https://res.cloudinary.com/dbl5xfcyq/image/upload/v1746064992/pf-bife-acebolado_rkwb1h.jpg",
   },
   {
-    nome: "Bife à Parmegiana",
-    descricao: "Acompanha: Arroz, fritas, feijão (opcional), salada",
-    preco: 40.0,
-    categoria: "Pratos principais",
-    imagem:
-      "https://media-cdn.tripadvisor.com/media/photo-s/0e/60/e3/db/parmegiana-de-carne-arroz.jpg",
-  },
-  {
-    nome: "Frango à Parmegiana",
-    descricao: "Acompanha: Arroz, fritas, feijão (opcional), salada",
-    preco: 35.0,
-    categoria: "Pratos principais",
-    imagem:
-      "https://t3.ftcdn.net/jpg/04/47/67/78/360_F_447677856_SRAxwThp2I0nUFsRXu1h3lEvpaslV7YN.jpg",
-  },
-  {
-    nome: "Filé de Frango",
-    descricao: "Acompanha: Arroz, feijão, fritas, salada",
+    nome: "Lasanha de Frango",
+    descricao: "Lasanha caseira com molho branco",
     preco: 28.0,
     categoria: "Pratos principais",
     imagem:
-      "https://s3-sa-east-1.amazonaws.com/loja2/70ff4c569495a9f24a03421e3d33bc2a.jpg",
+      "https://res.cloudinary.com/dbl5xfcyq/image/upload/v1746064992/lasanha-frango_ao_molho_branco_twyqsf.jpg",
   },
   {
-    nome: "Água Mineral 200ml",
-    descricao: "Água mineral sem gás",
-    preco: 5.0,
-    categoria: "Bebidas",
+    nome: "Pudim de Leite",
+    descricao: "Sobremesa clássica brasileira",
+    preco: 10.0,
+    categoria: "Sobremesas",
     imagem:
-      "https://png.pngtree.com/png-vector/20240913/ourmid/pngtree-mineral-water-bottles-png-image_12926881.png",
+      "https://res.cloudinary.com/dbl5xfcyq/image/upload/v1746064993/pudim-de-leite_oj4lwn.webp",
   },
   {
-    nome: "Refrigerante Lata 350ml",
-    descricao: "Diversas marcas (Coca-Cola, Guaraná, etc.)",
-    preco: 5.0,
+    nome: "Coca-Cola Lata",
+    descricao: "350ml gelada",
+    preco: 6.0,
     categoria: "Bebidas",
     imagem:
-      "https://acarajedajaira.lojatop.net/_core/_uploads/44/2022/06/2145160622jke4cdfbif.png",
+      "https://res.cloudinary.com/dbl5xfcyq/image/upload/v1746064992/coca-lata-350ml_snvmsm.png",
+  },
+  {
+    nome: "Filé Mignon ao Molho Madeira",
+    descricao: "Acompanha arroz e batata palha",
+    preco: 45.0,
+    categoria: "Pratos especiais",
+    imagem:
+      "https://res.cloudinary.com/dbl5xfcyq/image/upload/v1746064992/prato_feito_-_fil%C3%A9_mignon_ao_molho_madeira_xj86dr.jpg",
   },
 ];
 
-// Função para popular o banco
-async function popularBanco() {
+async function seedDatabase() {
   try {
-    await mongoose.connect(uri);
-    console.log("Conectado ao banco de dados!");
-
-    await Menu.deleteMany({}); // Limpa a coleção
-    await Menu.insertMany(itensDoMenu); // Insere os itens
-
+    await mongoose.connect(
+      "mongodb+srv://admin:admin-123@cluster0.iptsnp9.mongodb.net/restaurante?retryWrites=true&w=majority&appName=Cluster0"
+    );
+    await MenuItem.deleteMany();
+    await MenuItem.insertMany(menuItems);
     console.log("Dados inseridos com sucesso!");
-    process.exit();
-  } catch (erro) {
-    console.error("Erro:", erro);
+    process.exit(0);
+  } catch (error) {
+    console.error("Erro ao popular o banco:", error);
     process.exit(1);
   }
 }
 
-popularBanco();
+seedDatabase();

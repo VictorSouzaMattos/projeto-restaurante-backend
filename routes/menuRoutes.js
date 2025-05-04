@@ -1,39 +1,65 @@
 const express = require("express");
-const Menu = require("../models/Menu");
 const router = express.Router();
+const MenuItem = require("../models/MenuItem");
 
+// Listar todos os pratos
 router.get("/menu", async (req, res) => {
   try {
-    const itens = await Menu.find().lean();
-    console.log("Itens encontrados:", itens.length);
-    return res.status(200).json(itens);
-  } catch (err) {
-    console.error("ERRO DETALHADO:", err);
-    res.status(500).json({ error: "Erro ao buscar itens do menu" });
+    const pratos = await MenuItem.find();
+    res.status(200).json(pratos);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao buscar pratos", erro: error.message });
   }
 });
 
-// Rota para adicionar um novo item ao menu
+// Criar um prato
 router.post("/menu", async (req, res) => {
   try {
-    const novoItem = new Menu(req.body);
-    await novoItem.save();
-    res.status(201).json(novoItem);
-  } catch (err) {
-    console.error("ERRO DETALHADO:", err);
-    res.status(500).json({ error: "Erro ao adicionar item ao menu" });
+    const { nome, descricao, preco, categoria, imagem } = req.body;
+    const novoPrato = new MenuItem({
+      nome,
+      descricao,
+      preco,
+      categoria,
+      imagem,
+    });
+    await novoPrato.save();
+    res.status(201).json(novoPrato);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao criar prato", erro: error.message });
   }
 });
 
-// Rota para excluir um item do menu
+// Atualizar um prato
+router.put("/menu/:id", async (req, res) => {
+  try {
+    const { nome, descricao, preco, categoria, imagem } = req.body;
+    const pratoAtualizado = await MenuItem.findByIdAndUpdate(
+      req.params.id,
+      { nome, descricao, preco, categoria, imagem },
+      { new: true }
+    );
+    res.status(200).json(pratoAtualizado);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao atualizar prato", erro: error.message });
+  }
+});
+
+// Excluir um prato
 router.delete("/menu/:id", async (req, res) => {
   try {
-    const item = await Menu.findByIdAndDelete(req.params.id);
-    if (!item) return res.status(404).json({ error: "Item não encontrado" });
-    res.status(200).json({ mensagem: "Item excluído com sucesso" });
-  } catch (err) {
-    console.error("ERRO DETALHADO:", err);
-    res.status(500).json({ error: "Erro ao excluir item" });
+    await MenuItem.findByIdAndDelete(req.params.id);
+    res.status(200).json({ mensagem: "Prato excluído com sucesso" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ mensagem: "Erro ao excluir prato", erro: error.message });
   }
 });
 
