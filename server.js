@@ -9,9 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // Middlewares
-app.use(
-  cors({ origin: "https://https://sistema-de-pedidos-online.vercel.app/" })
-);
+app.use(cors({ origin: "https://sistema-de-pedidos-online.vercel.app/" }));
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3001" }));
 app.use(express.json());
 
