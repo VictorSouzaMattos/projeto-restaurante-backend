@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({
   origin: [
     "https://https://sistema-de-pedidos-online.vercel.app/",
-    "http://localhost:3001"
+    "http://localhost:3001",
   ]
 }));
 app.use(express.json());
