@@ -9,8 +9,14 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: "https://sistema-de-pedidos-online.vercel.app/" }));
-app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3001" }));
+app.use(
+  cors({
+    origin: [
+      "https://https://sistema-de-pedidos-online.vercel.app/",
+      "http://localhost:3001",
+    ],
+  })
+);
 app.use(express.json());
 
 // Conexão com MongoDB usando variável de ambiente
@@ -33,6 +39,11 @@ app.get("/", (req, res) => {
     status: "online",
     version: "1.0.0",
   });
+});
+
+app.get("/api/orders", async (req, res) => {
+  const orders = await Order.find().sort({ createdAt: -1 });
+  res.json(orders);
 });
 
 // Porta dinâmica para ambientes de deploy
