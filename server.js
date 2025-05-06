@@ -6,13 +6,12 @@ const menuRoutes = require("./routes/menuRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const authRoutes = require("./routes/authRoutes");
 
-const app = express();
+const cors = require("cors");
 
-// Middlewares
 app.use(cors({
   origin: [
-    "https://https://sistema-de-pedidos-online.vercel.app/",
-    "http://localhost:3001",
+    "https://sistema-de-pedidos-online.vercel.app", // seu domínio de produção
+    "http://localhost:3001" // para desenvolvimento local, se quiser
   ]
 }));
 app.use(express.json());
