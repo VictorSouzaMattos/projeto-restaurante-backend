@@ -1,19 +1,21 @@
-require("dotenv").config(); // Carrega variáveis do .env
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("cors"); // <-- Mantenha apenas uma declaração do cors
 const menuRoutes = require("./routes/menuRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const authRoutes = require("./routes/authRoutes");
 
-const cors = require("cors");
+const app = express(); // <-- Inicialize o app antes de usar
 
+// Configuração do CORS
 app.use(cors({
   origin: [
-    "https://sistema-de-pedidos-online.vercel.app", // seu domínio de produção
-    "http://localhost:3001" // para desenvolvimento local, se quiser
+    "https://sistema-de-pedidos-online.vercel.app",
+    "http://localhost:3001"
   ]
 }));
+
 app.use(express.json());
 
 // Conexão com MongoDB usando variável de ambiente
