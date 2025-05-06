@@ -32,6 +32,11 @@ app.use("/api/admin", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 
+app.get("/api/orders", async (req, res) => {
+  const orders = await Order.find().sort({ createdAt: -1 });
+  res.json(orders);
+});
+
 // Rota de saúde
 app.get("/", (req, res) => {
   res.status(200).json({
