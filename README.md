@@ -33,3 +33,14 @@ PORT=3000
 6. Inicie o servidor: node seed.js e node server.js
 
 7. A API estará disponível em: http://localhost:3000
+
+## Deploy
+
+A API está disponível em:  
+https://projeto-restaurante-backend.onrender.com
+
+## Integração com frontend
+
+O frontend do sistema está disponível em:  
+https://sistema-de-pedidos-online.vercel.app  
+Repositório: https://github.com/VictorSouzaMattos/sistema-de-pedidos-online
