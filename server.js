@@ -1,12 +1,22 @@
-require("dotenv").config(); // Carrega variáveis do .env
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("cors"); // <-- Mantenha apenas uma declaração do cors
 const menuRoutes = require("./routes/menuRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const authRoutes = require("./routes/authRoutes");
 
-const app = express();
+const app = express(); // <-- Inicialize o app antes de usar
+
+// Configuração do CORS
+app.use(
+  cors({
+    origin: [
+      "https://sistema-de-pedidos-online.vercel.app",
+      "http://localhost:3001",
+    ],
+  })
+);
 
 // Middlewares
 app.use(
@@ -17,6 +27,7 @@ app.use(
     ],
   })
 );
+
 app.use(express.json());
 
 // Conexão com MongoDB usando variável de ambiente
@@ -32,6 +43,11 @@ mongoose
 app.use("/api/admin", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
+
+app.get("/api/orders", async (req, res) => {
+  const orders = await Order.find().sort({ createdAt: -1 });
+  res.json(orders);
+});
 
 // Rota de saúde
 app.get("/", (req, res) => {
